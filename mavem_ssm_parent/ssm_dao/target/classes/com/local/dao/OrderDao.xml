@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace="com.local.dao.OrderDao">
+    <resultMap id="order" type="com.local.domain.Orders">
+        <id property="id" column="id"></id>
+        <result property="orderNum" column="orderNum"></result>
+        <result property="orderTime" column="orderTime"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <result property="peopleCount" column="peopleCount"></result>
+        <result property="payType" column="payType"></result>
+        <result property="orderDesc" column="orderDesc"></result>
+
+        <collection property="member" column="memberId" javaType="com.local.domain.Member"
+        ofType="com.local.dao.MenberDao" select="memberfindById"></collection>
+
+        <collection property="travellers" column="id" javaType="java.util.List"
+        ofType="com.local.dao.TraverllerDao" select="travellerFindById"></collection>
+
+        <collection property="product" column="productId" javaType="com.local.domain.Product"
+              ofType="com.local.dao.ProductDao"      select="findById"></collection>
+        </resultMap>
+
+
+
+    <select id="findAll" resultMap="order">
+        select * from orders
+    </select>
+
+    <select id="findById" parameterType="java.lang.String" resultType="com.local.domain.Product">
+       select * from product where id=#{id}
+    </select>
+
+
+    <select id="memberfindById" parameterType="java.lang.String" resultType="com.local.domain.Member">
+       select * from member where id=#{id}
+    </select>
+
+    <select id="travellerFindById" parameterType="java.lang.String" resultType="com.local.domain.Traveller">
+       select * from traveller where id in (select travellerId from order_traveller where orderId=#{ordersId})
+    </select>
+
+
+    <select id="orderFindById" parameterType="java.lang.String" resultMap="order">
+       select * from orders where id=#{ordersId}
+    </select>
+
+
+</mapper>

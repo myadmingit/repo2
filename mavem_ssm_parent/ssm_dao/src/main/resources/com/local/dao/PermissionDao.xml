@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.local.dao.PermissionDao">
+    <resultMap id="permission" type="com.local.domain.Permission">
+        <id property="id" column="id"></id>
+        <result property="roleName" column="roleName"></result>
+        <result property="roleDesc" column="roleDesc"></result>
+        <collection property="permissions" column="id" javaType="java.util.List"
+                    ofType="com.local.dao.PermissionDao" select="findPermission">
+        </collection>
+    </resultMap>
+    <!---->
+    <select id="findPermission" parameterType="java.lang.String" resultMap="permission">
+        select * from permission where id in (select permissionId from role_permission where roleId=#{id})
+   </select>
+    <!---->
+    <select id="findAll" resultType="com.local.domain.Permission">
+        select * from permission
+    </select>
+    <!--角色保存-->
+    <insert id="savePermission" parameterType="com.local.domain.Permission">
+        insert into permission (permissionname,url) values (#{permissionName},#{url})
+    </insert>
+
+
+
+
+</mapper>

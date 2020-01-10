@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.local.dao.LogDao">
+    <insert id="savelog" parameterType="com.local.domain.SysLog">
+        insert into syslog(visitTime,username,ip,url,executionTime,method) values(#{visitTime},#{username},#{ip},#{url},#{executionTime},#{method})
+    </insert>
+
+    <select id="findAllLog" resultType="com.local.domain.SysLog">
+        select * from syslog
+    </select>
+</mapper>
